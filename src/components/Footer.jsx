@@ -4,10 +4,12 @@ function Footer() {
   return (
     <footer className="mt-16 border-t border-line py-8">
       <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-        <p className="font-serif text-[15px] text-muted">
-          © {currentYear} FunGerman · Developed by{' '}
-          <span className="text-text">Emran Hussain Munna</span>
-        </p>
+        <div className="flex flex-col items-center justify-center font-serif text-[15px] text-muted">
+          <p>© {currentYear} FunGerman </p>
+          <p>
+            Developed by <span className="text-text">Emran Hussain Munna</span>
+          </p>
+        </div>
 
         <nav className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] text-muted">
           <a href="/privacy" className="hover:text-accent">
