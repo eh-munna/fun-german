@@ -23,11 +23,18 @@ dist-ssr
 *.sln
 *.sw?
 
-# Env files (keep .env.example)
+# Environment files
 .env
-.env.*
+.env.local
+.env.*.local
 
+# Sensitive API keys (be explicit)
+*.key
+*.pem
 
-row-data/
-deutsch-vocabs/
-Laptop@1x.png
+# OS files
+.DS_Store
+Thumbs.db
+
+# Optional npm cache
+.npm

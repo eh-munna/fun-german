@@ -10,6 +10,7 @@ import {
   ALL_POS,
   filterVocabulary,
   PAGE_SIZES,
+  sortVocabulary,
 } from './lib/vocabulary';
 import { supabase, WORDS_SELECT } from './supabase/supabaseClient';
 
@@ -30,7 +31,8 @@ function App({ appName = 'FunGerman', density = 'comfortable' }) {
         console.error('Error fetching vocabulary:', error);
         setStatus('error');
       } else {
-        setVocabulary(data || []);
+        // Sort once here so display order never depends on insertion order.
+        setVocabulary(sortVocabulary(data || []));
         setStatus('ready');
       }
     };

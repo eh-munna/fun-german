@@ -1,20 +1,134 @@
--- One-time seed: the A1 mock vocabulary from src/mockData.js.
--- Run in the Supabase SQL Editor. Does nothing if `words` already has rows.
-insert into public.words (pos, level, article, word, plural, synonymde, en, synonymen, ctxde, hl)
-select * from (values
-  ('Verb', 'A1', null, 'an·sehen', null, null, 'to watch, look at', null, 'Ich sehe mir den Film an.', 'sehe ... an'),
-  ('Verb', 'A1', null, 'ein·kaufen', null, null, 'to shop, go shopping', null, 'Am Samstag kaufe ich im Supermarkt ein.', 'kaufe ... ein'),
-  ('Verb', 'A1', null, 'auf·stehen', null, null, 'to get up', null, 'Ich stehe jeden Tag um sieben Uhr auf.', 'stehe ... auf'),
-  ('Verb', 'A1', null, 'bekommen', null, null, 'to get', 'to receive', 'Ich bekomme morgen ein Paket.', 'bekomme'),
-  ('Nomen', 'A1', 'der', 'Umzug', 'Umzüge', null, 'move (to a new home)', null, 'Der Umzug war sehr anstrengend.', 'Umzug'),
-  ('Nomen', 'A1', 'die', 'Wohnung', 'Wohnungen', null, 'apartment', 'flat', 'Unsere Wohnung hat drei Zimmer.', 'Wohnung'),
-  ('Nomen', 'A1', 'das', 'Brötchen', 'Brötchen', 'Semmel', 'bread roll', null, 'Morgens esse ich ein Brötchen mit Käse.', 'Brötchen'),
-  ('Nomen', 'A1', 'der', 'Schlüssel', 'Schlüssel', null, 'key', null, 'Ich finde meinen Schlüssel nicht.', 'Schlüssel'),
-  ('Nomen', 'A1', 'das', 'Obst', null, null, 'fruit', null, 'Ich kaufe jeden Samstag frisches Obst.', 'Obst'),
-  ('Adjektiv', 'A1', null, 'müde', null, null, 'tired', null, 'Nach der Arbeit bin ich immer müde.', 'müde'),
-  ('Adverb', 'A1', null, 'gern', null, null, 'like to (do something)', 'gladly', 'Ich trinke gern Kaffee.', 'gern'),
-  ('Konjunktion', 'A1', null, 'aber', null, null, 'but', null, 'Das Zimmer ist klein, aber gemütlich.', 'aber'),
-  ('Präposition', 'A1', null, 'neben', null, null, 'next to', null, 'Die Bäckerei ist neben der Bank.', 'neben'),
-  ('Phrase', 'A1', null, 'Wie geht''s?', null, 'Wie geht es dir?', 'How are you?', 'How''s it going?', 'Hallo Anna, wie geht''s?', 'wie geht''s')
-) as v(pos, level, article, word, plural, synonymde, en, synonymen, ctxde, hl)
-where not exists (select 1 from public.words);
+-- ============================================================
+-- FunGerman — Words INSERT: A1 Lektion 1 & 2
+-- lektion_id 1 = Begrüßung und Vorstellung (L1)
+-- lektion_id 2 = Familie und Befinden (L2)
+-- All ctxDe sentences are original (not from textbook)
+-- Character names replaced per legal rules
+-- Pronouns (ich/du/er/sie/wir/ihr/Sie) excluded — grammar, not vocabulary
+-- Positions spaced by 10
+-- ============================================================
+
+INSERT INTO public.words
+  (word, pos, level, article, plural, synonymde, en, synonymen, ctxde, hl, lektion_id, position)
+VALUES
+
+-- ============================================================
+-- LEKTION 1: Begrüßung und Vorstellung
+-- ============================================================
+
+('heißen',       'Verb',      'A1', null,  null,              null,            'to be called',          null,            'Wie heißt du? Ich heiße Müller.',                                    'heiße',          1, 10),
+('der Name',     'Nomen',     'A1', 'der', 'Namen',           null,            'name',                  null,            'Mein Name ist Herr Tom.',                                             'Name',           1, 20),
+('kommen',       'Verb',      'A1', null,  null,              null,            'to come',               null,            'Woher kommst du? Ich komme aus der Türkei.',                          'komme',          1, 30),
+('Deutschland',  'Nomen',     'A1', null,  null,              null,            'Germany',               null,            'Berlin ist die Hauptstadt von Deutschland.',                           'Deutschland',    1, 40),
+('sprechen',     'Verb',      'A1', null,  null,              null,            'to speak',              null,            'Meine Kollegin spricht drei Sprachen.',                               'spricht',        1, 50),
+('das Deutsch',  'Nomen',     'A1', 'das', null,              null,            'German (language)',     null,            'Ich lerne Deutsch seit einem Jahr.',                                  'Deutsch',        1, 60),
+('ein bisschen', 'Adverb',    'A1', null,  null,              null,            'a little bit',          'a little',      'Ich spreche ein bisschen Französisch.',                               'ein bisschen',   1, 70),
+('Guten Tag',    'Phrase',    'A1', null,  null,              null,            'good day, hello',       'hi',            'Guten Tag, ich hätte gerne einen Termin.',                            'Guten Tag',      1, 80),
+('hallo',        'Phrase',    'A1', null,  null,              null,            'hello, hi',             null,            'Hallo! Bist du neu in der Klasse?',                                   'Hallo',          1, 90),
+('Auf Wiedersehen', 'Phrase', 'A1', null,  null,              null,            'goodbye',               null,            'Es war schön, Sie kennenzulernen. Auf Wiedersehen!',                  'Auf Wiedersehen',1, 100),
+('tschüs',       'Phrase',    'A1', null,  null,              null,            'bye',                   'bye-bye',       'Tschüs, wir sehen uns morgen!',                                       'Tschüs',         1, 110),
+('der Herr',     'Nomen',     'A1', 'der', 'Herren',          null,            'Mr., gentleman',        null,            'Herr Tom wartet schon im Büro.',                                      'Herr',           1, 120),
+('das Kind',     'Nomen',     'A1', 'das', 'Kinder',          null,            'child',                 null,            'Die Kinder spielen im Garten.',                                       'Kinder',         1, 130),
+('Guten Abend',  'Phrase',    'A1', null,  null,              null,            'good evening',          null,            'Guten Abend, meine Damen und Herren!',                                'Guten Abend',    1, 140),
+('die Dame',     'Nomen',     'A1', 'die', 'Damen',           null,            'lady, woman',           null,            'Die Damen und Herren nehmen bitte Platz.',                            'Damen',          1, 150),
+('willkommen',   'Adjektiv',  'A1', null,  null,              null,            'welcome',               null,            'Willkommen in Berlin! Wir freuen uns, Sie zu sehen.',                 'Willkommen',     1, 160),
+('bei',          'Präposition','A1', null, null,              null,            'at, with, by',          null,            'Ich arbeite bei einer kleinen Firma in Hamburg.',                     'bei',            1, 170),
+('die Musik',    'Nomen',     'A1', 'die', null,              null,            'music',                 null,            'Musik macht das Leben schöner.',                                      'Musik',          1, 180),
+('international','Adjektiv',  'A1', null,  null,              null,            'international',         null,            'Der Kurs ist sehr international — viele Länder sind vertreten.',      'international',  1, 190),
+('Guten Morgen', 'Phrase',    'A1', null,  null,              null,            'good morning',          null,            'Guten Morgen! Hast du gut geschlafen?',                               'Guten Morgen',   1, 200),
+('die Frau',     'Nomen',     'A1', 'die', 'Frauen',          null,            'woman',                 null,            'Eine Frau fragt nach dem Weg zum Bahnhof.',                           'Frau',           1, 210),
+('die Frau',     'Nomen',     'A1', 'die', 'Frauen',          null,            'Mrs., Ms.',             null,            'Frau Müller, Sie haben einen Anruf.',                                 'Frau',           1, 220),
+('danke',        'Phrase',    'A1', null,  null,              null,            'thank you, thanks',     null,            'Danke, das ist sehr nett von dir!',                                   'Danke',          1, 230),
+('Gute Nacht',   'Phrase',    'A1', null,  null,              null,            'good night',            null,            'Gute Nacht! Bis morgen früh.',                                        'Gute Nacht',     1, 240),
+('der Papa',     'Nomen',     'A1', 'der', 'Papas',           'der Vater',     'dad',                   'daddy',         'Magdalenas Papa holt sie jeden Tag von der Schule ab.',               'Papa',           1, 250),
+('sein',         'Verb',      'A1', null,  null,              null,            'to be',                 null,            'Ich bin Annet, und das ist mein Freund Müller.',                      'bin',            1, 260),
+('die Entschuldigung', 'Nomen','A1','die', 'Entschuldigungen',null,            'excuse, apology',       null,            'Entschuldigung, wo ist hier die Toilette?',                           'Entschuldigung', 1, 270),
+('wie',          'Adverb',    'A1', null,  null,              null,            'how',                   null,            'Wie heißt du auf Englisch?',                                          'Wie',            1, 280),
+('ja',           'Adverb',    'A1', null,  null,              null,            'yes',                   null,            'Ja, ich verstehe das.',                                               'Ja',             1, 290),
+('nein',         'Adverb',    'A1', null,  null,              null,            'no',                    null,            'Nein, das stimmt leider nicht.',                                      'Nein',           1, 300),
+('woher',        'Adverb',    'A1', null,  null,              null,            'from where',            null,            'Woher kommen Sie ursprünglich?',                                      'Woher',          1, 310),
+('aus',          'Präposition','A1', null, null,              null,            'from, out of',          null,            'Mein Kollege kommt aus Spanien.',                                     'aus',            1, 320),
+('Österreich',   'Nomen',     'A1', null,  null,              null,            'Austria',               null,            'Wien ist die Hauptstadt von Österreich.',                             'Österreich',     1, 330),
+('die Schweiz',  'Nomen',     'A1', 'die', null,              null,            'Switzerland',           null,            'Die Schweiz hat vier offizielle Sprachen.',                           'Schweiz',        1, 340),
+('aha',          'Phrase',    'A1', null,  null,              null,            'aha, I see',            null,            'Aha, jetzt verstehe ich das Problem.',                                'Aha',            1, 350),
+('toll',         'Adjektiv',  'A1', null,  null,              'super',         'great, amazing',        'fantastic',     'Die Aussicht von hier oben ist wirklich toll.',                       'toll',           1, 360),
+('interessant',  'Adjektiv',  'A1', null,  null,              null,            'interesting',           null,            'Das Buch ist sehr interessant — ich kann nicht aufhören zu lesen.',   'interessant',    1, 370),
+('was',          'Adverb',    'A1', null,  null,              null,            'what',                  null,            'Was machst du am Wochenende?',                                        'Was',            1, 380),
+('auch',         'Adverb',    'A1', null,  null,              null,            'also, too',             'as well',       'Ich lerne auch Spanisch neben Deutsch.',                              'auch',           1, 390),
+('die Sprache',  'Nomen',     'A1', 'die', 'Sprachen',        null,            'language',              null,            'Welche Sprache sprichst du zu Hause?',                                'Sprache',        1, 400),
+('der Buchstabe','Nomen',     'A1', 'der', 'Buchstaben',      null,            'letter (alphabet)',     null,            'Das deutsche Alphabet hat 26 Buchstaben plus Umlaute.',               'Buchstaben',     1, 410),
+('das Alphabet', 'Nomen',     'A1', 'das', null,              null,            'alphabet',              null,            'Wir lernen heute das Alphabet auf Deutsch.',                          'Alphabet',       1, 420),
+('buchstabieren','Verb',      'A1', null,  null,              null,            'to spell',              null,            'Kannst du deinen Nachnamen bitte buchstabieren?',                     'buchstabieren',  1, 430),
+('bitte',        'Adverb',    'A1', null,  null,              null,            'please',                null,            'Kannst du mir bitte helfen?',                                         'bitte',          1, 440),
+('die Firma',    'Nomen',     'A1', 'die', 'Firmen',          null,            'company, firm',         'business',      'Müller arbeitet seit drei Jahren bei derselben Firma.',               'Firma',          1, 450),
+('Vielen Dank',  'Phrase',    'A1', null,  null,              null,            'thank you very much',   'many thanks',   'Vielen Dank für Ihre Hilfe!',                                         'Vielen Dank',    1, 460),
+('Auf Wiederhören','Phrase',  'A1', null,  null,              null,            'goodbye (on the phone)',null,            'Ich rufe morgen wieder an. Auf Wiederhören!',                         'Auf Wiederhören',1, 470),
+('die Adresse',  'Nomen',     'A1', 'die', 'Adressen',        null,            'address',               null,            'Wie ist Ihre Adresse? Ich schicke Ihnen die Unterlagen per Post.',   'Adresse',        1, 480),
+('die Visitenkarte','Nomen',  'A1', 'die', 'Visitenkarten',   null,            'business card',         null,            'Darf ich Ihnen meine Visitenkarte geben?',                            'Visitenkarte',   1, 490),
+('der Vorname',  'Nomen',     'A1', 'der', 'Vornamen',        null,            'first name',            'given name',    'Ihr Vorname ist Annet, richtig?',                                     'Vorname',        1, 500),
+('der Familienname','Nomen',  'A1', 'der', 'Familiennamen',   'der Nachname',  'last name',             'surname',       'Wie schreibt man Ihren Familiennamen?',                               'Familiennamen',  1, 510),
+('die Straße',   'Nomen',     'A1', 'die', 'Straßen',         null,            'street',                null,            'In welcher Straße wohnst du?',                                        'Straße',         1, 520),
+('die Stadt',    'Nomen',     'A1', 'die', 'Städte',          null,            'city, town',            null,            'München ist eine schöne Stadt im Süden von Deutschland.',             'Stadt',          1, 530),
+('das Land',     'Nomen',     'A1', 'das', 'Länder',          null,            'country',               null,            'In welchem Land möchtest du am liebsten leben?',                     'Land',           1, 540),
+('die E-Mail',   'Nomen',     'A1', 'die', 'E-Mails',         null,            'email',                 null,            'Schick mir bitte eine E-Mail mit den Details.',                      'E-Mail',         1, 550),
+('das Telefon',  'Nomen',     'A1', 'das', 'Telefone',        null,            'phone, telephone',      null,            'Mein Telefon klingelt gerade — ich bin gleich zurück.',               'Telefon',        1, 560),
+('das Formular', 'Nomen',     'A1', 'das', 'Formulare',       null,            'form',                  null,            'Bitte füllen Sie dieses Formular vollständig aus.',                   'Formular',       1, 570),
+('der Kurs',     'Nomen',     'A1', 'der', 'Kurse',           null,            'course, class',         null,            'Der Deutschkurs beginnt jeden Montag um neun Uhr.',                   'Kurs',           1, 580),
+('die Fremdsprache','Nomen',  'A1', 'die', 'Fremdsprachen',   null,            'foreign language',      null,            'Deutsch ist meine erste Fremdsprache.',                               'Fremdsprache',   1, 590),
+('die Anmeldung','Nomen',     'A1', 'die', 'Anmeldungen',     null,            'registration, sign-up', null,            'Die Anmeldung für den Kurs ist ab sofort möglich.',                   'Anmeldung',      1, 600),
+('die Postleitzahl','Nomen',  'A1', 'die', 'Postleitzahlen',  null,            'postal code, zip code', null,            'Die Postleitzahl von Berlin Mitte ist 10115.',                        'Postleitzahl',   1, 610),
+
+-- ============================================================
+-- LEKTION 2: Familie und Befinden
+-- ============================================================
+
+('lernen',       'Verb',      'A1', null,  null,              null,            'to learn, to study',    null,            'Müller lernt jeden Abend eine Stunde Deutsch.',                       'lernt',          2, 10),
+('der Park',     'Nomen',     'A1', 'der', 'Parks',           null,            'park',                  null,            'Wir treffen uns heute Nachmittag im Park.',                           'Park',           2, 20),
+('die Pause',    'Nomen',     'A1', 'die', 'Pausen',          null,            'break, pause',          null,            'Nach zwei Stunden machen wir eine kurze Pause.',                      'Pause',          2, 30),
+('die Familie',  'Nomen',     'A1', 'die', 'Familien',        null,            'family',                null,            'Annet besucht ihre Familie jedes Jahr im Sommer.',                    'Familie',        2, 40),
+('der Vater',    'Nomen',     'A1', 'der', 'Väter',           'der Papa',      'father',                null,            'Müller Kleinmanns Vater lebt in Kanada.',                             'Vater',          2, 50),
+('die Großeltern','Nomen',    'A1', null,  'Großeltern',      null,            'grandparents',          null,            'Magdalena verbringt die Ferien bei ihren Großeltern.',                'Großeltern',     2, 60),
+('die Mutter',   'Nomen',     'A1', 'die', 'Mütter',          'die Mama',      'mother',                null,            'Annets Mutter spricht kein Deutsch.',                                 'Mutter',         2, 70),
+('die Eltern',   'Nomen',     'A1', null,  'Eltern',          null,            'parents',               null,            'Meine Eltern wohnen noch in meiner Heimatstadt.',                     'Eltern',         2, 80),
+('der Bruder',   'Nomen',     'A1', 'der', 'Brüder',          null,            'brother',               null,            'Mein Bruder und ich rufen uns jede Woche an.',                        'Bruder',         2, 90),
+('die Geschwister','Nomen',   'A1', null,  'Geschwister',     null,            'siblings',              null,            'Hast du Geschwister? — Ja, ich habe zwei Schwestern.',                'Geschwister',    2, 100),
+('das Jahr',     'Nomen',     'A1', 'das', 'Jahre',           null,            'year',                  null,            'Ich wohne seit einem Jahr in Berlin.',                                'Jahr',           2, 110),
+('leben',        'Verb',      'A1', null,  null,              null,            'to live',               null,            'John Rüdiger lebt seit zwanzig Jahren in München.',                   'lebt',           2, 120),
+('gut',          'Adjektiv',  'A1', null,  null,              null,            'good',                  null,            'Das Essen hier ist wirklich gut.',                                    'gut',            2, 130),
+('super',        'Adjektiv',  'A1', null,  null,              'toll',          'great, super',          'fantastic',     'Die Party war super — ich hatte viel Spaß!',                          'super',          2, 140),
+('naja',         'Phrase',    'A1', null,  null,              null,            'well, so-so',           null,            'Wie war der Film? — Naja, es geht so.',                               'Naja',           2, 150),
+('ach',          'Phrase',    'A1', null,  null,              null,            'oh (surprise/resignation)',null,         'Ach, ich habe meinen Schlüssel vergessen!',                           'Ach',            2, 160),
+('so',           'Adverb',    'A1', null,  null,              null,            'so, like this',         null,            'Macht man das so? Zeig mir bitte, wie es geht.',                      'so',             2, 170),
+('sehr',         'Adverb',    'A1', null,  null,              null,            'very',                  null,            'Ich bin sehr müde heute — ich arbeite seit acht Stunden.',            'sehr',           2, 180),
+('der Enkel',    'Nomen',     'A1', 'der', 'Enkel',           null,            'grandson',              null,            'John Rüdigers Enkel besucht ihn jeden Sonntag.',                     'Enkel',          2, 190),
+('die Enkelin',  'Nomen',     'A1', 'die', 'Enkelinnen',      null,            'granddaughter',         null,            'Alina Rüdiger spielt oft mit ihrer kleinen Enkelin.',                 'Enkelin',        2, 200),
+('die Tochter',  'Nomen',     'A1', 'die', 'Töchter',         null,            'daughter',              null,            'Annets Tochter geht seit September in die Schule.',                   'Tochter',        2, 210),
+('der Sohn',     'Nomen',     'A1', 'der', 'Söhne',           null,            'son',                   null,            'Mein Sohn möchte später Arzt werden.',                                'Sohn',           2, 220),
+('die Schwester','Nomen',     'A1', 'die', 'Schwestern',      null,            'sister',                null,            'Magdalena und ihre Schwester sehen sich sehr ähnlich.',               'Schwester',      2, 230),
+('die Oma',      'Nomen',     'A1', 'die', 'Omas',            'die Großmutter','grandma',               'granny',        'Die Oma backt immer Kuchen, wenn wir zu Besuch kommen.',              'Oma',            2, 240),
+('der Mann',     'Nomen',     'A1', 'der', 'Männer',          null,            'man',                   null,            'Ein Mann fragt an der Rezeption nach dem Zimmer.',                    'Mann',           2, 250),
+('der Mann',     'Nomen',     'A1', 'der', 'Männer',          'der Ehemann',   'husband',               null,            'Alina Rüdigers Mann arbeitet als Ingenieur.',                         'Mann',           2, 260),
+('der Opa',      'Nomen',     'A1', 'der', 'Opas',            'der Großvater', 'grandpa',               'granddad',      'Der Opa erzählt den Kindern gerne alte Geschichten.',                 'Opa',            2, 270),
+('der Ehemann',  'Nomen',     'A1', 'der', 'Ehemänner',       null,            'husband',               'spouse',        'Ihr Ehemann kommt direkt vom Flughafen zu der Feier.',                'Ehemann',        2, 280),
+('die Ehefrau',  'Nomen',     'A1', 'die', 'Ehefrauen',       null,            'wife',                  'spouse',        'John Rüdigers Ehefrau heißt Alina.',                                  'Ehefrau',        2, 290),
+('falsch',       'Adjektiv',  'A1', null,  null,              null,            'wrong, incorrect',      null,            'Die Antwort ist leider falsch — bitte versuche es nochmal.',          'falsch',         2, 300),
+('geschieden',   'Adjektiv',  'A1', null,  null,              null,            'divorced',              null,            'Meine Eltern sind seit zehn Jahren geschieden.',                      'geschieden',     2, 310),
+('wohnen',       'Verb',      'A1', null,  null,              null,            'to live (reside)',       null,            'Wo wohnst du gerade? — Ich wohne in Kreuzberg.',                     'wohnst',         2, 320),
+('jetzt',        'Adverb',    'A1', null,  null,              null,            'now',                   null,            'Ich bin jetzt fertig — wir können gehen.',                            'jetzt',          2, 330),
+('die Zahl',     'Nomen',     'A1', 'die', 'Zahlen',          null,            'number (cardinal)',     null,            'Die Zahl sieben gilt in vielen Kulturen als Glückszahl.',             'Zahl',           2, 340),
+('wo',           'Adverb',    'A1', null,  null,              null,            'where',                 null,            'Wo ist hier der nächste Supermarkt?',                                 'Wo',             2, 350),
+('geboren',      'Adjektiv',  'A1', null,  null,              null,            'born',                  null,            'Ich bin in Polen geboren, aber ich lebe seit Jahren in Deutschland.', 'geboren',        2, 360),
+('die Nummer',   'Nomen',     'A1', 'die', 'Nummern',         null,            'number (reference)',    null,            'Welche Nummer hat Ihr Zimmer?',                                       'Nummer',         2, 370),
+('verheiratet',  'Adjektiv',  'A1', null,  null,              null,            'married',               null,            'Müller Kleinmann ist seit zwei Jahren verheiratet.',                  'verheiratet',    2, 380),
+('haben',        'Verb',      'A1', null,  null,              null,            'to have',               null,            'Hast du Geschwister? — Ja, ich habe einen Bruder.',                   'Hast',           2, 390),
+('der Geburtsort','Nomen',    'A1', 'der', 'Geburtsorte',     null,            'place of birth',        null,            'Mein Geburtsort ist Hamburg, aber ich bin in Berlin aufgewachsen.',  'Geburtsort',     2, 400),
+('der Wohnort',  'Nomen',     'A1', 'der', 'Wohnorte',        null,            'place of residence',   null,            'Bitte tragen Sie Ihren aktuellen Wohnort in das Formular ein.',       'Wohnort',        2, 410),
+('der Familienstand','Nomen', 'A1', 'der', null,              null,            'marital status',        null,            'Familienstand: ledig. Das steht so in meinem Ausweis.',               'Familienstand',  2, 420),
+('ledig',        'Adjektiv',  'A1', null,  null,              null,            'single, unmarried',     null,            'Ich bin noch ledig — ich habe noch nicht geheiratet.',                'ledig',          2, 430),
+('verwitwet',    'Adjektiv',  'A1', null,  null,              null,            'widowed',               null,            'Alina Rüdiger ist seit letztem Jahr verwitwet.',                      'verwitwet',      2, 440),
+('das Alter',    'Nomen',     'A1', 'das', null,              null,            'age',                   null,            'In welchem Alter haben Sie Deutsch gelernt?',                         'Alter',          2, 450),
+('der Norden',   'Nomen',     'A1', 'der', null,              null,            'north',                 null,            'Hamburg liegt im Norden von Deutschland.',                            'Norden',         2, 460),
+('der Osten',    'Nomen',     'A1', 'der', null,              null,            'east',                  null,            'Die Sonne geht im Osten auf.',                                        'Osten',          2, 470),
+('der Süden',    'Nomen',     'A1', 'der', null,              null,            'south',                 null,            'Im Süden ist es meistens wärmer als im Norden.',                      'Süden',          2, 480),
+('der Westen',   'Nomen',     'A1', 'der', null,              null,            'west',                  null,            'Köln und Düsseldorf liegen im Westen Deutschlands.',                  'Westen',         2, 490),
+('die Hauptstadt','Nomen',    'A1', 'die', 'Hauptstädte',     null,            'capital city',          null,            'Berlin ist die Hauptstadt und größte Stadt Deutschlands.',            'Hauptstadt',     2, 500);

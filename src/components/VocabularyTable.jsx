@@ -3,7 +3,10 @@ import { formatPlural, splitHighlight } from '../lib/vocabulary';
 // Shown in place of rows when there are none to show.
 const EMPTY_MESSAGES = {
   loading: { de: 'Wird geladen…', en: 'Loading vocabulary.' },
-  error: { de: 'Fehler beim Laden.', en: 'Could not load vocabulary. Please try again later.' },
+  error: {
+    de: 'Fehler beim Laden.',
+    en: 'Could not load vocabulary. Please try again later.',
+  },
   ready: { de: 'Keine Treffer.', en: 'No vocabulary found.' },
 };
 
@@ -40,6 +43,7 @@ function Sentence({ text, hl }) {
 // Every optional field (article, plural, synonyms) renders nothing when null.
 function VocabularyRow({ entry, compact }) {
   const plural = formatPlural(entry);
+  const wordOnly = entry.word.replace(/^(der|die|das)\s+/, '');
 
   return (
     <div
@@ -64,7 +68,7 @@ function VocabularyRow({ entry, compact }) {
             </span>
           )}
           <span className="font-medium tracking-[-0.005em]">
-            {entry.word}
+            {wordOnly}
             {plural && (
               <span className="text-[15px] font-normal text-muted">
                 {plural}
@@ -112,11 +116,7 @@ function VocabularyTable({ entries, compact, status = 'ready', footer, ref }) {
       </div>
 
       {entries.map((entry) => (
-        <VocabularyRow
-          key={entry.id}
-          entry={entry}
-          compact={compact}
-        />
+        <VocabularyRow key={entry.id} entry={entry} compact={compact} />
       ))}
 
       {entries.length === 0 && (

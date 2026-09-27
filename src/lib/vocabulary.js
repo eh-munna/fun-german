@@ -37,6 +37,25 @@ function matchesSearch(entry, query) {
   return normalize(haystack).includes(q);
 }
 
+// Display order: level (A1 → C1), then textbook chapter (lektionId), then
+// word order within the chapter (position). Array sort is stable, so multiple
+// meanings of one word (same lektionId + position) keep their fetch order.
+const LEVEL_ORDER = LEVELS.filter((l) => l !== ALL_LEVELS);
+
+const levelRank = (level) => {
+  const i = LEVEL_ORDER.indexOf(level);
+  return i === -1 ? LEVEL_ORDER.length : i;
+};
+
+export function sortVocabulary(vocabulary) {
+  return [...vocabulary].sort(
+    (a, b) =>
+      levelRank(a.level) - levelRank(b.level) ||
+      a.lektionId - b.lektionId ||
+      a.position - b.position,
+  );
+}
+
 // Level, part of speech and search all apply together (AND).
 export function filterVocabulary(vocabulary, { level, pos, query }) {
   return vocabulary.filter(

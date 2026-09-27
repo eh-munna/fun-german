@@ -8,4 +8,4 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 // The `words` table stores column names in lowercase (synonymde, ctxde, …).
 // Alias them back to the camelCase keys the app uses.
 export const WORDS_SELECT =
-  'id, pos, level, article, word, plural, synonymDe:synonymde, en, synonymEn:synonymen, ctxDe:ctxde, hl';
+  'id, pos, level, article, word, plural, synonymDe:synonymde, en, synonymEn:synonymen, ctxDe:ctxde, hl, lektionId:lektion_id, position';
