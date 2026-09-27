@@ -26,3 +26,8 @@ dist-ssr
 # Env files (keep .env.example)
 .env
 .env.*
+
+
+row-data/
+deutsch-vocabs/
+Laptop@1x.png
