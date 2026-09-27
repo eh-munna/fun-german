@@ -77,7 +77,7 @@ export function filterVocabulary(vocabulary, { level, topicId, pos, query }) {
 
 // "der Umzug, -Umzüge": returns the ", -Umzüge" suffix, or null when there is no plural.
 export function formatPlural(entry) {
-  return entry.plural ? `, -${entry.plural}` : null;
+  return entry.plural ? `- ${entry.plural}` : null;
 }
 
 // Splits `text` into [{ text, highlight }] segments around `hl`.

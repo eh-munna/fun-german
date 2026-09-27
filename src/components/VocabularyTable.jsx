@@ -61,20 +61,21 @@ function VocabularyRow({ entry, compact }) {
       </div>
 
       <div className="flex min-w-0 flex-col gap-[3px]">
-        <div className="flex flex-wrap items-baseline gap-1.5 font-serif text-[21px] leading-[1.25]">
+        <div className="font-serif text-[21px] leading-[1.25]">
           {entry.article && (
-            <span className="text-[15px] text-muted italic">
+            <span className="mr-1.5 text-[15px] text-muted italic">
               {entry.article}
             </span>
           )}
           <span className="font-medium tracking-[-0.005em]">
             {wordOnly}
-            {plural && (
-              <span className="text-[15px] font-normal text-muted">
-                {plural}
-              </span>
-            )}
+            {plural && ','}
           </span>
+          {plural && (
+            <span className="block text-[15px] font-normal text-muted">
+              {plural}
+            </span>
+          )}
         </div>
         {entry.synonymDe && (
           <Meta label="Syn." className="text-sm">
