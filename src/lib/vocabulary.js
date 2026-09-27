@@ -3,6 +3,8 @@ export const ALL_POS = 'All';
 
 export const LEVELS = [ALL_LEVELS, 'A1', 'A2', 'B1', 'B2', 'C1'];
 
+export const PAGE_SIZES = [25, 50, 75, 100];
+
 export const PARTS_OF_SPEECH = [
   ALL_POS,
   'Nomen',

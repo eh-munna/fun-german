@@ -95,9 +95,13 @@ function VocabularyRow({ entry, compact }) {
   );
 }
 
-function VocabularyTable({ entries, compact, status = 'ready' }) {
+// `footer` (the pagination controls) renders inside the card, below the rows.
+function VocabularyTable({ entries, compact, status = 'ready', footer, ref }) {
   return (
-    <div className="overflow-hidden rounded-[10px] border border-line bg-surface">
+    <div
+      ref={ref}
+      className="scroll-mt-4 overflow-hidden rounded-[10px] border border-line bg-surface"
+    >
       <div
         className={`hidden border-b border-line px-[22px] py-3 text-[11px] font-semibold tracking-[0.08em] text-muted uppercase lg:grid ${GRID}`}
       >
@@ -126,6 +130,8 @@ function VocabularyTable({ entries, compact, status = 'ready' }) {
           <div className="text-sm text-muted">{EMPTY_MESSAGES[status].en}</div>
         </div>
       )}
+
+      {footer}
     </div>
   );
 }
