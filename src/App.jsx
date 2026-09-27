@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Filters from './components/Filters';
+import Footer from './components/Footer';
 import Header from './components/Header';
 import Pagination from './components/Pagination';
 import SearchBox from './components/SearchBox';
@@ -29,18 +30,33 @@ function App({ appName = 'FunGerman', density = 'comfortable' }) {
 
   useEffect(() => {
     const fetchVocabulary = async () => {
-      const { data, error } = await supabase
-        .from('words')
-        .select(WORDS_SELECT)
-        .order('id');
-      if (error) {
-        console.error('Error fetching vocabulary:', error);
-        setStatus('error');
-      } else {
-        // Sort once here so display order never depends on insertion order.
-        setVocabulary(sortVocabulary(data || []));
-        setStatus('ready');
+      // Supabase caps a single request at 1000 rows regardless of table size,
+      // so page through with .range() until a page comes back short.
+      const pageSize = 1000;
+      let allRows = [];
+      let from = 0;
+
+      while (true) {
+        const { data, error } = await supabase
+          .from('words')
+          .select(WORDS_SELECT)
+          .order('id')
+          .range(from, from + pageSize - 1);
+
+        if (error) {
+          console.error('Error fetching vocabulary:', error);
+          setStatus('error');
+          return;
+        }
+
+        allRows = allRows.concat(data || []);
+        if (!data || data.length < pageSize) break;
+        from += pageSize;
       }
+
+      // Sort once here so display order never depends on insertion order.
+      setVocabulary(sortVocabulary(allRows));
+      setStatus('ready');
     };
     fetchVocabulary();
   }, []);
@@ -85,8 +101,7 @@ function App({ appName = 'FunGerman', density = 'comfortable' }) {
   // Clamp as a safety net (e.g. data reloads); filter changes already reset to 1.
   const currentPage = Math.min(page, pageCount);
   const pageEntries = useMemo(
-    () =>
-      entries.slice((currentPage - 1) * pageSize, currentPage * pageSize),
+    () => entries.slice((currentPage - 1) * pageSize, currentPage * pageSize),
     [entries, currentPage, pageSize],
   );
 
@@ -180,6 +195,14 @@ function App({ appName = 'FunGerman', density = 'comfortable' }) {
             />
           )
         }
+      />
+
+      <Footer
+        appName={appName}
+        theme={theme}
+        onToggleTheme={toggleTheme}
+        count={entries.length}
+        total={vocabulary.length}
       />
     </main>
   );
