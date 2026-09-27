@@ -9,7 +9,7 @@ function SearchBox({ value, onChange }) {
         onChange={(e) => onChange(e.target.value)}
         placeholder="Search German or English…"
         aria-label="Search"
-        className="min-w-0 flex-1 bg-transparent text-sm text-text outline-none focus-visible:outline-none"
+        className="min-w-0 flex-1 bg-transparent text-base text-text outline-none focus-visible:outline-none md:text-sm"
       />
       {value && (
         <button

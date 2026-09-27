@@ -56,7 +56,7 @@ function FilterGroup({ label, options, value, onChange, variant }) {
           value={value}
           onChange={(e) => onChange(e.target.value)}
           aria-label={label}
-          className="h-11 w-full cursor-pointer appearance-none rounded-lg border border-line bg-surface pr-9 pl-3 text-sm font-medium text-text"
+          className="h-11 w-full cursor-pointer appearance-none rounded-lg border border-line bg-surface pr-9 pl-3 text-base font-medium text-text"
         >
           {options.map((option) => (
             <option key={option} value={option}>
