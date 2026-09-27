@@ -1,5 +1,10 @@
 import { ArrowCounterClockwise, CaretDown } from '@phosphor-icons/react';
-import { LEVELS, PARTS_OF_SPEECH } from '../lib/vocabulary';
+import {
+  ALL_LEVELS,
+  ALL_TOPICS,
+  LEVELS,
+  PARTS_OF_SPEECH,
+} from '../lib/vocabulary';
 
 const PILL_STYLES = {
   // Segmented control inside a surface tray.
@@ -70,10 +75,60 @@ function FilterGroup({ label, options, value, onChange, variant }) {
   );
 }
 
-// `onReset` clears level, part of speech and search together; disabled when nothing is active.
+// Standard <select> at all breakpoints — up to 42 topics don't scale as pills.
+// Options are lektions.name (FunGerman names only), grouped by level via
+// <optgroup> when Level = "All"; scoped to the selected level otherwise.
+function TopicFilter({ level, topicId, lektions, onChange }) {
+  const options =
+    level === ALL_LEVELS
+      ? LEVELS.filter((l) => l !== ALL_LEVELS).map((l) => ({
+          level: l,
+          items: lektions.filter((lektion) => lektion.level === l),
+        }))
+      : null;
+  const flatItems =
+    options === null ? lektions.filter((lektion) => lektion.level === level) : null;
+
+  return (
+    <div className="flex min-w-0 flex-1 flex-col gap-[5px] md:flex-none md:flex-row md:items-center md:gap-2.5">
+      <span className="text-xs font-medium text-muted">Topic</span>
+      <div className="relative flex items-center">
+        <select
+          value={topicId === ALL_TOPICS ? ALL_TOPICS : String(topicId)}
+          onChange={(e) => onChange(e.target.value)}
+          aria-label="Topic"
+          className="h-11 w-full cursor-pointer appearance-none rounded-lg border border-line bg-surface pr-9 pl-3 text-base font-medium text-text md:h-[30px] md:w-auto md:text-[13px]"
+        >
+          <option value={ALL_TOPICS}>All</option>
+          {options
+            ? options.map(({ level: groupLevel, items }) => (
+                <optgroup key={groupLevel} label={groupLevel}>
+                  {items.map((lektion) => (
+                    <option key={lektion.id} value={lektion.id}>
+                      {lektion.name}
+                    </option>
+                  ))}
+                </optgroup>
+              ))
+            : flatItems.map((lektion) => (
+                <option key={lektion.id} value={lektion.id}>
+                  {lektion.name}
+                </option>
+              ))}
+        </select>
+        <CaretDown className="pointer-events-none absolute right-3 text-sm text-muted" />
+      </div>
+    </div>
+  );
+}
+
+// `onReset` clears level, topic, part of speech and search together; disabled when nothing is active.
 function Filters({
   level,
   onLevelChange,
+  topicId,
+  onTopicChange,
+  lektions,
   pos,
   onPosChange,
   onReset,
@@ -87,6 +142,12 @@ function Filters({
         value={level}
         onChange={onLevelChange}
         variant="segment"
+      />
+      <TopicFilter
+        level={level}
+        topicId={topicId}
+        lektions={lektions}
+        onChange={onTopicChange}
       />
       <FilterGroup
         label="Part of speech"

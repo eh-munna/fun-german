@@ -9,3 +9,6 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 // Alias them back to the camelCase keys the app uses.
 export const WORDS_SELECT =
   'id, pos, level, article, word, plural, synonymDe:synonymde, en, synonymEn:synonymen, ctxDe:ctxde, hl, lektionId:lektion_id, position';
+
+// Small, mostly-static table — fetched once and used to build the Topic filter.
+export const LEKTIONS_SELECT = 'id, number, name, level';

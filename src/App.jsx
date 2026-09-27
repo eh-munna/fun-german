@@ -8,11 +8,17 @@ import { useTheme } from './hooks/useTheme';
 import {
   ALL_LEVELS,
   ALL_POS,
+  ALL_TOPICS,
   filterVocabulary,
   PAGE_SIZES,
+  sortLektions,
   sortVocabulary,
 } from './lib/vocabulary';
-import { supabase, WORDS_SELECT } from './supabase/supabaseClient';
+import {
+  LEKTIONS_SELECT,
+  supabase,
+  WORDS_SELECT,
+} from './supabase/supabaseClient';
 
 function App({ appName = 'FunGerman', density = 'comfortable' }) {
   const { theme, toggleTheme } = useTheme();
@@ -39,17 +45,40 @@ function App({ appName = 'FunGerman', density = 'comfortable' }) {
     fetchVocabulary();
   }, []);
 
+  // `lektions` is small and mostly-static — fetched once for the Topic filter.
+  const [lektions, setLektions] = useState([]);
+
+  useEffect(() => {
+    const fetchLektions = async () => {
+      const { data, error } = await supabase
+        .from('lektions')
+        .select(LEKTIONS_SELECT);
+      if (error) {
+        console.error('Error fetching lektions:', error);
+      } else {
+        setLektions(sortLektions(data || []));
+      }
+    };
+    fetchLektions();
+  }, []);
+
   const [query, setQuery] = useState('');
   const [level, setLevel] = useState(ALL_LEVELS);
+  const [topicId, setTopicId] = useState(ALL_TOPICS);
   const [pos, setPos] = useState(ALL_POS);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
   const tableRef = useRef(null);
 
+  const lektionsById = useMemo(
+    () => new Map(lektions.map((lektion) => [lektion.id, lektion])),
+    [lektions],
+  );
+
   // Search + filters first; pagination only slices the filtered list.
   const entries = useMemo(
-    () => filterVocabulary(vocabulary, { level, pos, query }),
-    [vocabulary, level, pos, query],
+    () => filterVocabulary(vocabulary, { level, topicId, pos, query }),
+    [vocabulary, level, topicId, pos, query],
   );
 
   const pageCount = Math.max(1, Math.ceil(entries.length / pageSize));
@@ -68,6 +97,18 @@ function App({ appName = 'FunGerman', density = 'comfortable' }) {
   };
   const changeLevel = (value) => {
     setLevel(value);
+    // Topic implies exactly one level — an invalid combination is reset rather
+    // than left stale (Level → Topic cascade is one-way; see CLAUDE.md).
+    if (topicId !== ALL_TOPICS) {
+      const selectedTopic = lektionsById.get(topicId);
+      if (!selectedTopic || selectedTopic.level !== value) {
+        setTopicId(ALL_TOPICS);
+      }
+    }
+    setPage(1);
+  };
+  const changeTopic = (value) => {
+    setTopicId(value === ALL_TOPICS ? ALL_TOPICS : Number(value));
     setPage(1);
   };
   const changePos = (value) => {
@@ -89,6 +130,7 @@ function App({ appName = 'FunGerman', density = 'comfortable' }) {
   const resetAll = () => {
     setQuery('');
     setLevel(ALL_LEVELS);
+    setTopicId(ALL_TOPICS);
     setPos(ALL_POS);
     setPage(1);
   };
@@ -108,10 +150,18 @@ function App({ appName = 'FunGerman', density = 'comfortable' }) {
       <Filters
         level={level}
         onLevelChange={changeLevel}
+        topicId={topicId}
+        onTopicChange={changeTopic}
+        lektions={lektions}
         pos={pos}
         onPosChange={changePos}
         onReset={resetAll}
-        canReset={query !== '' || level !== ALL_LEVELS || pos !== ALL_POS}
+        canReset={
+          query !== '' ||
+          level !== ALL_LEVELS ||
+          topicId !== ALL_TOPICS ||
+          pos !== ALL_POS
+        }
       />
 
       <VocabularyTable

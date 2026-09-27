@@ -1,5 +1,6 @@
 export const ALL_LEVELS = 'All';
 export const ALL_POS = 'All';
+export const ALL_TOPICS = 'All';
 
 export const LEVELS = [ALL_LEVELS, 'A1', 'A2', 'B1', 'B2', 'C1'];
 
@@ -40,7 +41,7 @@ function matchesSearch(entry, query) {
 // Display order: level (A1 → C1), then textbook chapter (lektionId), then
 // word order within the chapter (position). Array sort is stable, so multiple
 // meanings of one word (same lektionId + position) keep their fetch order.
-const LEVEL_ORDER = LEVELS.filter((l) => l !== ALL_LEVELS);
+export const LEVEL_ORDER = LEVELS.filter((l) => l !== ALL_LEVELS);
 
 const levelRank = (level) => {
   const i = LEVEL_ORDER.indexOf(level);
@@ -56,11 +57,19 @@ export function sortVocabulary(vocabulary) {
   );
 }
 
-// Level, part of speech and search all apply together (AND).
-export function filterVocabulary(vocabulary, { level, pos, query }) {
+// Display order for the Topic dropdown: level (A1 → C1), then chapter number.
+export function sortLektions(lektions) {
+  return [...lektions].sort(
+    (a, b) => levelRank(a.level) - levelRank(b.level) || a.number - b.number,
+  );
+}
+
+// Level, topic, part of speech and search all apply together (AND).
+export function filterVocabulary(vocabulary, { level, topicId, pos, query }) {
   return vocabulary.filter(
     (entry) =>
       (level === ALL_LEVELS || entry.level === level) &&
+      (topicId === ALL_TOPICS || entry.lektionId === topicId) &&
       (pos === ALL_POS || entry.pos === pos) &&
       matchesSearch(entry, query),
   );
