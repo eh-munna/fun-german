@@ -1,5 +1,5 @@
 export const ALL_LEVELS = 'All';
-export const ALL_POS = 'Alle';
+export const ALL_POS = 'All';
 
 export const LEVELS = [ALL_LEVELS, 'A1', 'A2', 'B1', 'B2', 'C1'];
 
