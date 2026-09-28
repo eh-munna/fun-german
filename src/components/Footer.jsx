@@ -12,13 +12,13 @@ function Footer() {
         </div>
 
         <nav className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] text-muted">
-          <a href="/privacy" className="hover:text-accent">
+          <a href="/" className="hover:text-accent">
             Privacy Policy
           </a>
-          <a href="/copyright" className="hover:text-accent">
+          <a href="/" className="hover:text-accent">
             Copyright &amp; Legal
           </a>
-          <a href="/contact" className="hover:text-accent">
+          <a href="/" className="hover:text-accent">
             Contact
           </a>
         </nav>

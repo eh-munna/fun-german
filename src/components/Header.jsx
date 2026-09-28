@@ -14,11 +14,13 @@ function Header({ appName, theme, onToggleTheme, count, total, children }) {
       <header className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           {/* Same logo for both mobile and desktop, just different sizes */}
-          <img
-            src={logoSrc}
-            alt={appName}
-            className="h-10 w-auto md:h-12 w-auto"
-          />
+          <a href="/">
+            <img
+              src={logoSrc}
+              alt={appName}
+              className="h-10 w-auto md:h-12 w-auto"
+            />
+          </a>
         </div>
 
         <button
